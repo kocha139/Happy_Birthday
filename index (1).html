@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой День Рождения</title>
+    <style>
+        :root {
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            --color-slate-900-rgb: 19, 52, 59;
+            
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+            
+            --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --radius-base: 8px;
+            --radius-lg: 12px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-gray-400-rgb: 119, 124, 124;
+                --color-teal-300-rgb: 50, 184, 198;
+                --color-gray-300-rgb: 167, 169, 169;
+                --color-gray-200-rgb: 245, 245, 245;
+                
+                --color-background: var(--color-charcoal-700);
+                --color-surface: var(--color-charcoal-800);
+                --color-text: var(--color-gray-200);
+                --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+                --color-primary: var(--color-teal-300);
+                --color-primary-hover: var(--color-teal-400);
+                --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+                --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+                --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+                --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            padding: var(--space-20);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: var(--space-32);
+            color: var(--color-text);
+            letter-spacing: -0.01em;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-12);
+            margin-bottom: var(--space-32);
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: var(--space-12) var(--space-24);
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+            border: none;
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.25s;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--color-secondary-hover);
+        }
+
+        .nav-btn.active {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-card-border);
+            box-shadow: var(--shadow-sm);
+            padding: var(--space-24);
+            margin-bottom: var(--space-20);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-16);
+            color: var(--color-text);
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            margin-top: var(--space-20);
+            margin-bottom: var(--space-12);
+            color: var(--color-text);
+        }
+
+        .wishlist-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-12);
+            border-bottom: 1px solid var(--color-border);
+            gap: var(--space-12);
+        }
+
+        .wishlist-item:last-child {
+            border-bottom: none;
+        }
+
+        .wishlist-content {
+            flex: 1;
+        }
+
+        .wishlist-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .wishlist-link {
+            font-size: 0.9rem;
+            color: var(--color-primary);
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .wishlist-link:hover {
+            text-decoration: underline;
+        }
+
+        .wishlist-actions {
+            display: flex;
+            gap: var(--space-8);
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--space-8);
+            color: var(--color-text-secondary);
+            transition: color 0.2s;
+        }
+
+        .icon-btn:hover {
+            color: var(--color-text);
+        }
+
+        .add-item-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-12);
+            margin-top: var(--space-16);
+            padding-top: var(--space-16);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-8);
+        }
+
+        .form-group label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: 1rem;
+            background-color: var(--color-surface);
+            color: var(--color-text);
+        }
+
+        .form-control:focus {
+            outline: 2px solid var(--color-primary);
+            border-color: var(--color-primary);
+        }
+
+        .btn {
+            padding: var(--space-12) var(--space-24);
+            border: none;
+            border-radius: var(--radius-base);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.25s;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        .program-item {
+            padding: var(--space-16);
+            margin-bottom: var(--space-12);
+            background-color: var(--color-secondary);
+            border-radius: var(--radius-base);
+        }
+
+        .program-time {
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: var(--space-8);
+        }
+
+        .program-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .program-description {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-12);
+            padding: var(--space-12);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-icon {
+            color: var(--color-primary);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .checklist-content h4 {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .checklist-content p {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+            
+            .wishlist-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Мой День Рождения 🎉</h1>
+
+        <div class="navigation">
+            <button class="nav-btn active" onclick="showPage('wishlist')">Виш-лист</button>
+            <button class="nav-btn" onclick="showPage('program')">Программа</button>
+            <button class="nav-btn" onclick="showPage('bring')">Что взять с собой</button>
+        </div>
+
+        <!-- Страница виш-листа -->
+        <div id="wishlist" class="page active">
+            <div class="card">
+                <h2>🎁 Список желаний</h2>
+                <div id="wishlist-items">
+                    <div class="wishlist-item">
+                        <div class="wishlist-content">
+                            <div class="wishlist-name">Аренда Dodge Challenger на сутки</div>
+                            <a href="https://example.com" class="wishlist-link" target="_blank">Ссылка на товар</a>
+                        </div>
+                    </div>
+                    <div class="wishlist-item">
+                        <div class="wishlist-content">
+                            <div class="wishlist-name">Книга по информационной безопасности</div>
+                            <a href="https://example.com" class="wishlist-link" target="_blank">Ссылка на книгу</a>
+                        </div>
+                        <div class="wishlist-actions">
+                            <button class="icon-btn" onclick="editWishlistItem(1)" title="Редактировать">✏️</button>
+                            <button class="icon-btn" onclick="deleteWishlistItem(1)" title="Удалить">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="wishlist-item">
+                        <div class="wishlist-content">
+                            <div class="wishlist-name">Фотооборудование или аксессуары</div>
+                            <a href="https://example.com" class="wishlist-link" target="_blank">Ссылка на товар</a>
+                        </div>
+                        <div class="wishlist-actions">
+                            <button class="icon-btn" onclick="editWishlistItem(2)" title="Редактировать">✏️</button>
+                            <button class="icon-btn" onclick="deleteWishlistItem(2)" title="Удалить">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Страница программы -->
+        <div id="program" class="page">
+            <div class="card">
+                <h2>📅 Программа мероприятия</h2>
+                
+                <div class="program-item">
+                    <div class="program-time">15:00 - 15:30</div>
+                    <div class="program-title">Сбор гостей</div>
+                    <div class="program-description">Встреча друзей, приветствие и лёгкая закуска</div>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-time">15:30 - 16:00</div>
+                    <div class="program-title">Торжественная часть</div>
+                    <div class="program-description">Поздравления, тосты и задувание свечей на торте</div>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-time">16:00 - 18:00</div>
+                    <div class="program-title">Развлечения и игры</div>
+                    <div class="program-description">Настольные игры, фотосессия, общение</div>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-time">18:00 - 19:00</div>
+                    <div class="program-title">Ужин</div>
+                    <div class="program-description">Основное застолье с вкусными блюдами</div>
+                </div>
+
+                <div class="program-item">
+                    <div class="program-time">19:00 - 22:00</div>
+                    <div class="program-title">Свободное время</div>
+                    <div class="program-description">Музыка, танцы, продолжение общения</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Страница "Что взять с собой" -->
+        <div id="bring" class="page">
+            <div class="card">
+                <h2>🎒 Что взять с собой</h2>
+                
+                <div class="checklist-item">
+                    <div class="checklist-icon">✨</div>
+                    <div class="checklist-content">
+                        <h4>Хорошее настроение</h4>
+                        <p>Самое главное — это ваша улыбка и позитив!</p>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checklist-icon">🎁</div>
+                    <div class="checklist-content">
+                        <h4>Подарок (необязательно)</h4>
+                        <p>Ваше присутствие уже лучший подарок, но если хотите, можете взглянуть на виш-лист</p>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checklist-icon">👕</div>
+                    <div class="checklist-content">
+                        <h4>Удобная одежда</h4>
+                        <p>Одевайтесь комфортно, мы будем много общаться и веселиться</p>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checklist-icon">🎮</div>
+                    <div class="checklist-content">
+                        <h4>Любимая игра (по желанию)</h4>
+                        <p>Если есть любимая настольная игра, захватите её с собой!</p>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checklist-icon">📸</div>
+                    <div class="checklist-content">
+                        <h4>Камера или телефон</h4>
+                        <p>Будем делать много фотографий на память</p>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="checklist-icon">🍷</div>
+                    <div class="checklist-content">
+                        <h4>Любимый напиток (по желанию)</h4>
+                        <p>Если у вас есть особые предпочтения в напитках, можете принести с собой или сообщить мне</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let wishlistItems = [
+            { name: 'Футболка или майка (Hello Fitty, muscle mice или другая забавная)', link: 'https://jaygym.ru/all' },
+            { name: 'Фотооборудование или аксессуары', link: 'https://example.com' }
+        ];
+
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            pages.forEach(page => page.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(pageId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function renderWishlist() {
+            const container = document.getElementById('wishlist-items');
+            container.innerHTML = wishlistItems.map((item, index) => `
+                <div class="wishlist-item">
+                    <div class="wishlist-content">
+                        <div class="wishlist-name">${escapeHtml(item.name)}</div>
+                        ${item.link ? `<a href="${escapeHtml(item.link)}" class="wishlist-link" target="_blank">Ссылка на товар</a>` : ''}
+                    </div>
+                    <div class="wishlist-actions">
+                        <button class="icon-btn" onclick="editWishlistItem(${index})" title="Редактировать">✏️</button>
+                        <button class="icon-btn" onclick="deleteWishlistItem(${index})" title="Удалить">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addWishlistItem() {
+            const nameInput = document.getElementById('item-name');
+            const linkInput = document.getElementById('item-link');
+            
+            const name = nameInput.value.trim();
+            
+            if (!name) {
+                alert('Пожалуйста, введите название');
+                return;
+            }
+            
+            wishlistItems.push({
+                name: name,
+                link: linkInput.value.trim()
+            });
+            
+            renderWishlist();
+            
+            nameInput.value = '';
+            linkInput.value = '';
+        }
+
+        function deleteWishlistItem(index) {
+            if (confirm('Вы уверены, что хотите удалить этот пункт?')) {
+                wishlistItems.splice(index, 1);
+                renderWishlist();
+            }
+        }
+
+        function editWishlistItem(index) {
+            const item = wishlistItems[index];
+            const newName = prompt('Введите новое название:', item.name);
+            
+            if (newName !== null && newName.trim()) {
+                const newLink = prompt('Введите новую ссылку (или оставьте пустым):', item.link);
+                
+                wishlistItems[index] = {
+                    name: newName.trim(),
+                    link: newLink !== null ? newLink.trim() : item.link
+                };
+                
+                renderWishlist();
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>
+
